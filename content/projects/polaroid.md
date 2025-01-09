@@ -17,6 +17,6 @@ ShowWordCount: false
 UseHugoToc: true
 ---
 
-[Ferris Sweep](https://photos.fife.usercontent.google.com/pw/AP1GczPHhAB55D3LykkAZ_5H-qSTKWEdOzzAMzIPIgcOie_-pi2XaOsn206PIA=w1265-h953-s-no-gm?authuser=0)
+[![image]((https://photos.fife.usercontent.google.com/pw/AP1GczPHhAB55D3LykkAZ_5H-qSTKWEdOzzAMzIPIgcOie_-pi2XaOsn206PIA=w1265-h953-s-no-gm?authuser=0)](https://photos.fife.usercontent.google.com/pw/AP1GczPHhAB55D3LykkAZ_5H-qSTKWEdOzzAMzIPIgcOie_-pi2XaOsn206PIA=w1265-h953-s-no-gm?authuser=0)
 
 
