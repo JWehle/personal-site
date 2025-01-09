@@ -75,10 +75,6 @@ Electrical Engineer | PCB Designer | Creative Writer
   name = "github"
   url = "https://github.com/jwehle"
 
-  [[params.socialIcons]]
-  name = "email"
-  url = "mailto:jtwehle@gmail.com"
-
 #  [[params.socialIcons]]
 #  name = "signal"
 #  url = ""
