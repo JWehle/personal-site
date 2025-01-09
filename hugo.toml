@@ -1,0 +1,125 @@
+baseURL = "https://jannettw.com"
+title = "Jannett Wehle"
+paginate = 5
+theme = "Jane"
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+pygmentsUseClasses = true
+pluralizelisttitles = false
+
+[minify]
+disableXML = true
+minifyOutput = true
+
+[params]
+env = "production"
+title = "Jannett Wehle"
+description = "Personal Site"
+keywords = [ "Portfolio" ]
+author = "Jannett Wehle"
+images = [ "<link or path of image for opengraph, twitter-cards>" ]
+DateFormat = "January 2, 2006"
+defaultTheme = "dark"
+disableThemeToggle = true
+ShowReadingTime = false
+ShowShareButtons = false
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+ShowCodeCopyButtons = true
+ShowWordCount = false
+ShowRssButtonInSectionTermList = true
+UseHugoToc = true
+disableSpecial1stPost = false
+disableScrollToTop = false
+comments = false
+hidemeta = false
+hideSummary = false
+showtoc = false
+tocopen = false
+
+  [params.assets]
+  disableFingerprinting = true
+  favicon = "<link / abs url>"
+  favicon16x16 = "<link / abs url>"
+  favicon32x32 = "<link / abs url>"
+  apple_touch_icon = "<link / abs url>"
+  safari_pinned_tab = "<link / abs url>"
+
+  [params.label]
+  text = "Home"
+  icon = "/apple-touch-icon.png"
+  iconHeight = 35
+
+  [params.profileMode]
+  enabled = true
+  title = "Jannett Wehle"
+  subtitle = """
+Personal Site
+"""
+
+  [[params.socialIcons]]
+  name = "bluesky"
+  url = "https://bsky.app/profile/jannettw.com"
+
+  [[params.socialIcons]]
+  name = "youtube"
+  url = "https://www.youtube.com/@jannettw"
+
+  [[params.socialIcons]]
+  name = "linkedin"
+  url = "https://www.linkedin.com/in/jannett-wehle-49b867104"
+
+  [[params.socialIcons]]
+  name = "github"
+  url = "https://github.com/jwehle"
+
+  [[params.socialIcons]]
+  name = "email"
+  url = "mailto:jtwehle@gmail.com"
+
+#  [[params.socialIcons]]
+#  name = "signal"
+#  url = ""
+
+  [params.cover]
+  hidden = true
+  hiddenInList = true
+  hiddenInSingle = true
+
+  [params.fuseOpts]
+  isCaseSensitive = false
+  shouldSort = true
+  location = 0
+  distance = 1_000
+  threshold = 0.4
+  minMatchCharLength = 0
+  keys = [ "title", "permalink", "summary", "content" ]
+
+[[menu.main]]
+identifier = "about"
+name = "About"
+url = "/about"
+weight = 10
+
+[[menu.main]]
+identifier = "contact"
+name = "Contact"
+url = "/contact"
+weight = 20
+
+[[menu.main]]
+identifier = "Projects"
+name = "Projects"
+url = "/projects/"
+weight = 30
+
+#[[menu.main]]
+#identifier = "tags"
+#name = "Tags"
+#url = "/tags"
+#weight = 40
+
+[markup.highlight]
+noClasses = false
