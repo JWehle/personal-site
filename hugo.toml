@@ -56,7 +56,7 @@ tocopen = false
   enabled = true
   title = "Jannett Wehle"
   subtitle = """
-Personal Site
+Electrical Engineer | PCB Designer | Creative Writer
 """
 
   [[params.socialIcons]]
@@ -103,11 +103,11 @@ name = "About"
 url = "/about"
 weight = 10
 
-[[menu.main]]
-identifier = "contact"
-name = "Contact"
-url = "/contact"
-weight = 20
+#[[menu.main]]
+#identifier = "contact"
+#name = "Contact"
+#url = "/contact"
+#weight = 20
 
 [[menu.main]]
 identifier = "Projects"
