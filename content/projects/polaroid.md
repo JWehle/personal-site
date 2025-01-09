@@ -17,6 +17,6 @@ ShowWordCount: false
 UseHugoToc: true
 ---
 
-https://photos.app.goo.gl/Rqite36rbpj8vVGq7
+[Ferris Sweep](https://photos.app.goo.gl/Rqite36rbpj8vVGq7)
 
 
