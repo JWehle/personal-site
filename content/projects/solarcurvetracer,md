@@ -1,0 +1,20 @@
+---
+date: 2025-01-09
+title: "Solar Panel Curve Tracer"
+tags: ['PCB', 'Power', 'Solar']
+showToc: false
+TocOpen: false
+draft: false
+hidemeta: false
+comments: false
+disableShare: true
+disableHLJS: false
+hideSummary: false
+searchHidden: true
+ShowReadingTime: false
+ShowBreadCrumbs: false
+ShowWordCount: false
+UseHugoToc: true
+---
+
+Project page for a current and voltage curve (IV curve) tracer for calibrating solar panels and finding their maximum power point (MPP) for maximum power point tracking (MPPT) algorithm development.
