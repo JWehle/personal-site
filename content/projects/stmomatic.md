@@ -1,0 +1,20 @@
+---
+date: 2025-01-09
+title: "Multimeter Direct to Keyboard Strokes"
+tags: ['PCB', 'Keyboard', 'Tool']
+showToc: false
+TocOpen: false
+draft: false
+hidemeta: false
+comments: false
+disableShare: true
+disableHLJS: false
+hideSummary: false
+searchHidden: true
+ShowReadingTime: false
+ShowBreadCrumbs: false
+ShowWordCount: false
+UseHugoToc: true
+---
+
+Project page for a multimeter output reader that translates an Amprobe 38XR-A multimeter's output to keyboard strokes for quick and less error prone logging of data without a human typing in the loop.
