@@ -17,5 +17,7 @@ ShowWordCount: false
 UseHugoToc: true
 ---
 
-<a href="https://lh3.googleusercontent.com/pw/AP1GczPvH8Sfk_5wY2hbi-GQN9sDjCX4izlUJ6nfyf21xQ5P6ukL5edBRwntRCJ2PJ_f_4lyu0S1p_mYzFrvRdDHed1a64Zw0m6IC6YCqVcA44GQ8dED-UOz=w2400?source=screenshot.guru"> <img src="https://lh3.googleusercontent.com/pw/AP1GczPvH8Sfk_5wY2hbi-GQN9sDjCX4izlUJ6nfyf21xQ5P6ukL5edBRwntRCJ2PJ_f_4lyu0S1p_mYzFrvRdDHed1a64Zw0m6IC6YCqVcA44GQ8dED-UOz=w600-h315-p-k" /> </a>
+https://lh3.googleusercontent.com/pw/AP1GczP0Rb6ArY9mbzMo1l95QMnU8e08FWK13lrYpg5VqZKkwqE-LG3wHD9tdk4yL6hSjEyBscjSVEFKuI8h0AITuDDj7qoAM9ciRjFhEBbPqxU2BGJPwJze=w2400
 
+[![image](https://lh3.googleusercontent.com/pw/AP1GczP0Rb6ArY9mbzMo1l95QMnU8e08FWK13lrYpg5VqZKkwqE-LG3wHD9tdk4yL6hSjEyBscjSVEFKuI8h0AITuDDj7qoAM9ciRjFhEBbPqxU2BGJPwJze=w2400)](https://lh3.googleusercontent.com/pw/AP1GczP0Rb6ArY9mbzMo1l95QMnU8e08FWK13lrYpg5VqZKkwqE-LG3wHD9tdk4yL6hSjEyBscjSVEFKuI8h0AITuDDj7qoAM9ciRjFhEBbPqxU2BGJPwJze=w2400)
+(Image) Polaroid remote trigger PCB with batteries.
