@@ -15,6 +15,10 @@ ShowWordCount: false
 UseHugoToc: true
 ---
 
+[![image](https://imagedelivery.net/CPeYnfG3H67PTArKG8mvEA/6f043f16-4d7b-4bd9-b135-f4c1631f9c00/public)](https://imagedelivery.net/CPeYnfG3H67PTArKG8mvEA/6f043f16-4d7b-4bd9-b135-f4c1631f9c00/public)
+
+Hi I'm Jannett!
+
 I'm a PCB designer who specializes in DCDC Converter design, power electronics, and analog circuit design. I also dabble in embedded systems and microcontroller programming, mostly in C but sometimes in Python. 
 
 Creative writing, digital artwork, video game developement, and music production are hobbies of mine which I devote as much passion into as my free time allows, and these sometimes intersect with my knack for electronics and robotics. The ECAD software suites I am most competent in are Mentor Graphics Xpedition and Layout, KiCAD, and Altium Designer, in that order. 
