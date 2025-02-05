@@ -22,7 +22,4 @@ Project page for a test board for a 3.3V buck converter.
 This project uses a buck converter integrated circuit that integrates all the control components and the gate drivers into one part, but doesn't include the buck converter MOSFETs allowing the designer to size the MOSFETs for the right currrent for the application. The part number is the RT8110BGJ8: https://www.richtek.com/assets/product_file/RT8110B/DS8110B-02.pdf
 
 
-TEST PDF EMBED:
-{{% embed_pdf url="https://fisiquimicamente.com/recursos-fisica-quimica/formacion-profesorado/oposiciones/fisica/cantabria-2016-E1/cantabria-2016-E1.pdf" filename="cantabria-2016-E1.pdf" %}}
-
 
