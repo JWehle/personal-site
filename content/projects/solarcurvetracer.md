@@ -1,5 +1,5 @@
 ---
-date: 2021-12-2
+date: 2021-12-02
 title: "Solar Panel Curve Tracer"
 tags: ['PCB', 'Power', 'Solar']
 showToc: false
