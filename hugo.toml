@@ -1,6 +1,5 @@
 baseURL = "https://jannettw.com"
 title = "Jannett Wehle"
-paginate = 5
 theme = "hugo-PaperMod"
 enableRobotsTXT = true
 buildDrafts = false
