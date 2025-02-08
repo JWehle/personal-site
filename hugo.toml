@@ -57,6 +57,7 @@ tocopen = false
   subtitle = """
 Electrical Engineer | PCB Designer | Creative Writer
 """
+  imageURL = ""
 
   [[params.socialIcons]]
   name = "bluesky"
