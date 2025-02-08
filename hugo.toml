@@ -60,6 +60,10 @@ Electrical Engineer | PCB Designer | Creative Writer
   imageURL = ""
 
   [[params.socialIcons]]
+  name = "github"
+  url = "https://github.com/jwehle"
+
+  [[params.socialIcons]]
   name = "bluesky"
   url = "https://bsky.app/profile/jannettw.com"
 
@@ -70,10 +74,6 @@ Electrical Engineer | PCB Designer | Creative Writer
   [[params.socialIcons]]
   name = "linkedin"
   url = "https://www.linkedin.com/in/jannett-wehle-49b867104"
-
-  [[params.socialIcons]]
-  name = "github"
-  url = "https://github.com/jwehle"
 
   [[params.socialIcons]]
   name = "email"
