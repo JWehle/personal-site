@@ -57,7 +57,7 @@ tocopen = false
   subtitle = """
 Electrical Engineer | PCB Designer | Creative Writer
 """
-  imageURL = ""
+  imageURL = "/jannett.jpg"
 
   [[params.socialIcons]]
   name = "github"
