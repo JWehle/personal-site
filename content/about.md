@@ -17,7 +17,7 @@ UseHugoToc: true
 
 [![image](https://lh3.googleusercontent.com/pw/AP1GczPBEJJGyezu0_BWekVsj9eGvl5hoH_SKfhqW9TjaLV-MfARht-euvfeaw7Zk496zivTCsstH-EhEjOpNrFh1tni9k6aUoO62IhjpxF5ftcEJfAWtW1V=w2400)](https://lh3.googleusercontent.com/pw/AP1GczPBEJJGyezu0_BWekVsj9eGvl5hoH_SKfhqW9TjaLV-MfARht-euvfeaw7Zk496zivTCsstH-EhEjOpNrFh1tni9k6aUoO62IhjpxF5ftcEJfAWtW1V=w2400)
 
-Hi I'm Jannett!
+Hi, I'm Jannett!
 
 I'm a PCB designer who specializes in DCDC Converter design, power electronics, and analog circuit design. I also dabble in embedded systems and microcontroller programming, mostly in C but sometimes in Python. 
 
