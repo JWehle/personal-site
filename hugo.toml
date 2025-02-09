@@ -79,6 +79,10 @@ Electrical Engineer | PCB Designer | Creative Writer
   name = "email"
   url = "mailto:jannett@jannettw.com"
 
+  [[params.socialIcons]]
+  name = "signal"
+  url = "https://signal.me/#eu/Al_bybE8vA52IReEGhbhb4zNi6lhSPtgBk9oWqTxX6W-PIourTVKqofRwGDSQNF8"
+
 #  [[params.socialIcons]]
 #  name = "signal"
 #  url = ""
