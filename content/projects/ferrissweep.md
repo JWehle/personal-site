@@ -1,5 +1,5 @@
 ---
-date: 2024-09-21
+date: 2025-02-27
 title: "Ferris Cosmic"
 tags: ['PCB', 'Artwork', 'Battery', 'Keyboard']
 showToc: false
