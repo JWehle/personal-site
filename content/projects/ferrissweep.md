@@ -29,3 +29,8 @@ The github repository for the firmware is done using ZMK and is modified by Kend
 [![image](https://lh3.googleusercontent.com/pw/AP1GczMKUhIb2uNU8axP_P0lCkVrhAjPnJcWua0EU4ViIwqcjU-ibkS8NbGPe_SQy_CyGX8x8raovF_6ktL21oscH78Gh1RPLofLByudQ4HJpCdWryV3Tx85=w2400)](https://lh3.googleusercontent.com/pw/AP1GczMKUhIb2uNU8axP_P0lCkVrhAjPnJcWua0EU4ViIwqcjU-ibkS8NbGPe_SQy_CyGX8x8raovF_6ktL21oscH78Gh1RPLofLByudQ4HJpCdWryV3Tx85=w2400)
 (Image) In the process of soldering keyboard
 
+[![image](https://lh3.googleusercontent.com/pw/AP1GczPyyM9kpOw617GNnlf5Wh8RhhCNxl9pqMgrd9Dwvi95HK78evMp5io2llgJuCU5TbDjTkGmXt5Mg4iYPu2Q4_fas2YQOWSgCO9LnvBi4DRWWLWy_VGm=w2400)](https://lh3.googleusercontent.com/pw/AP1GczPyyM9kpOw617GNnlf5Wh8RhhCNxl9pqMgrd9Dwvi95HK78evMp5io2llgJuCU5TbDjTkGmXt5Mg4iYPu2Q4_fas2YQOWSgCO9LnvBi4DRWWLWy_VGm=w2400)
+(Image) Bare PCB
+
+[![image](https://lh3.googleusercontent.com/pw/AP1GczPEl4MP4NmN6kQRW0FbzD-ABhs75xkW_rI8PBjXxdikLKsCNwcVPG0xpA3BQEbLTDkAdBnFcZhiZxK03IVgxkAC0AG626-bw5MmOHoRpHWf1F49frye=w2400)](https://lh3.googleusercontent.com/pw/AP1GczPEl4MP4NmN6kQRW0FbzD-ABhs75xkW_rI8PBjXxdikLKsCNwcVPG0xpA3BQEbLTDkAdBnFcZhiZxK03IVgxkAC0AG626-bw5MmOHoRpHWf1F49frye=w2400)
+(Image) Purple keycaps variant with bare PCB
