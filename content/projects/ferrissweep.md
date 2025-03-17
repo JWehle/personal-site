@@ -17,7 +17,11 @@ ShowWordCount: false
 UseHugoToc: true
 ---
 
-The "Ferris Cosmic" is a branch off of the Ferris Sweep 2.1 keyboard design, with cutom graphics and minor aesthetic changes.
+The "Ferris Cosmic" is a branch off of the Ferris Sweep 2.1 keyboard design, with custom graphics and minor aesthetic changes.
+
+My github repository for hardware design of the project is done in KiCAD and is located here: https://github.com/JWehle/ferris-cosmic
+
+The github repository for the firmware is done using ZMK and is modified by Kendra Plante (https://github.com/kp9001) for a custom keys layout, located here: https://github.com/kp9001/ferris-zmk
 
 [![image](https://lh3.googleusercontent.com/pw/AP1GczO_qgWMJxX2Yt-_qabhJ5uVGqt8Teh7-1amaNXlWueEJWMD-cq-O81iKQ9-_QZJBzU4b_hJVjryaUpyHKzVAz2awAlY7nIVQBIjxMrJ7NWVe-984_lH=w2400)](https://lh3.googleusercontent.com/pw/AP1GczO_qgWMJxX2Yt-_qabhJ5uVGqt8Teh7-1amaNXlWueEJWMD-cq-O81iKQ9-_QZJBzU4b_hJVjryaUpyHKzVAz2awAlY7nIVQBIjxMrJ7NWVe-984_lH=w2400)
 (Image) Fully assembled Ferris Cosmic keyboard
