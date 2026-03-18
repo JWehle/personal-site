@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision Divider Designer - Dark Mode</title>
+    <style>
+        :root {
+            --bg-color: #0f172a; /* Deep Navy/Slate */
+            --card-bg: #1e293b; /* Charcoal Slate */
+            --text-main: #f1f5f9; /* Off-white */
+            --text-dim: #94a3b8; /* Muted Slate */
+            --primary: #38bdf8; /* Cyan Highlight */
+            --accent: #10b981; /* Emerald */
+            --border: #334155; /* Subtle Border */
+            --error: #f43f5e; /* Rose/Red */
+            --input-bg: #0f172a;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .calculator-container {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid var(--border);
+        }
+        h2 { 
+            margin-top: 0; 
+            color: var(--primary); 
+            border-bottom: 3px solid var(--accent); 
+            padding-bottom: 8px; 
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .input-group { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.95em; color: var(--text-dim); }
+        
+        input[type="number"] {
+            width: 100%; 
+            padding: 12px; 
+            background-color: var(--input-bg);
+            border: 2px solid var(--border); 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 16px;
+            color: white;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: var(--primary); outline: none; }
+        
+        /* Range Selector Styling */
+        .radio-stack { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
+        .radio-option { position: relative; }
+        .radio-option input { opacity: 0; position: absolute; }
+        .radio-option label {
+            display: block; 
+            padding: 12px; 
+            background: #334155; 
+            border-radius: 8px;
+            font-size: 0.9em; 
+            font-weight: bold; 
+            cursor: pointer; 
+            border: 2px solid transparent; 
+            transition: all 0.2s;
+            color: var(--text-main);
+        }
+        .radio-option input:checked + label { 
+            background: rgba(16, 185, 129, 0.2); 
+            color: var(--accent); 
+            border-color: var(--accent); 
+        }
+        
+        .guide-box {
+            background: rgba(56, 189, 248, 0.1); 
+            border-left: 4px solid var(--primary); 
+            padding: 12px; 
+            margin-bottom: 20px; 
+            font-size: 0.85em; 
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        button {
+            width: 100%; 
+            background-color: var(--primary); 
+            color: var(--bg-color); 
+            border: none; 
+            padding: 16px;
+            font-size: 16px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.1s, filter 0.2s;
+        }
+        button:hover { filter: brightness(1.1); }
+        button:active { transform: scale(0.98); }
+
+        #errorMessage { color: var(--error); font-weight: bold; margin-bottom: 15px; display: none; padding: 12px; background: rgba(244, 63, 94, 0.1); border-radius: 6px; border: 1px solid var(--error); }
+        
+        .results { margin-top: 25px; display: none; border-top: 1px solid var(--border); padding-top: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 12px 8px; border-bottom: 1px solid var(--border); }
+        th { font-size: 0.75em; text-transform: uppercase; color: var(--text-dim); letter-spacing: 1px; }
+        
+        .val-bold { font-weight: 700; color: var(--primary); }
+        .err-chip { color: var(--error); font-size: 0.95em; font-weight: 600; }
+        .cur-chip { color: var(--accent); font-size: 0.85em; font-family: 'Courier New', monospace; }
+        .pwr-chip { font-size: 0.75em; color: var(--text-dim); }
+    </style>
+</head>
+<body>
+
+<div class="calculator-container">
+    <h2>Divider Designer</h2>
+    
+    <div id="errorMessage"></div>
+
+    <div class="input-group">
+        <label for="vin">Input Voltage (Vin)</label>
+        <input type="number" id="vin" placeholder="17.0" step="any">
+    </div>
+    
+    <div class="input-group">
+        <label for="vout">Desired Output (Vout)</label>
+        <input type="number" id="vout" placeholder="0.8" step="any">
+    </div>
+
+    <div class="input-group">
+        <label>Current Window Constraint</label>
+        <div class="radio-stack">
+            <div class="radio-option">
+                <input type="radio" name="range" id="r1" value="0,0.0001" checked>
+                <label for="r1">Ultra Low: < 0.1 mA</label>
+            </div>
+            <div class="radio-option">
+                <input type="radio" name="range" id="r2" value="0.0001,0.001">
+                <label for="r2">Standard: 0.1 mA to 1 mA</label>
+            </div>
+            <div class="radio-option">
+                <input type="radio" name="range" id="r3" value="0.001,0.01">
+                <label for="r3">High Power: 1 mA to 10 mA</label>
+            </div>
+            <div class="radio-option">
+                <input type="radio" name="range" id="r4" value="0.01,0.1">
+                <label for="r4">Heavy Load: 10 mA to 100 mA</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="guide-box" id="guideText">Waiting for voltage inputs...</div>
+    
+    <button type="button" id="calcBtn">Compute Best Values</button>
+
+    <div class="results" id="resultsArea">
+        <label>Precision Optimization Results:</label>
+        <table>
+            <thead>
+                <tr>
+                    <th>R1 / R2</th>
+                    <th>Actual Vout</th>
+                    <th>Metrics</th>
+                </tr>
+            </thead>
+            <tbody id="resultsTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const e24 = [1.0, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8, 2.0, 2.2, 2.4, 2.7, 3.0, 3.3, 3.6, 3.9, 4.3, 4.7, 5.1, 5.6, 6.2, 6.8, 7.5, 8.2, 9.1];
+        const e96 = [1.00, 1.02, 1.05, 1.07, 1.10, 1.13, 1.15, 1.18, 1.21, 1.24, 1.27, 1.30, 1.33, 1.37, 1.40, 1.43, 1.47, 1.50, 1.54, 1.58, 1.62, 1.65, 1.69, 1.74, 1.78, 1.82, 1.87, 1.91, 1.96, 2.00, 2.05, 2.10, 2.15, 2.21, 2.26, 2.32, 2.37, 2.43, 2.49, 2.55, 2.61, 2.67, 2.74, 2.80, 2.87, 2.94, 3.01, 3.09, 3.16, 3.24, 3.32, 3.40, 3.48, 3.57, 3.65, 3.74, 3.83, 3.92, 4.02, 4.12, 4.22, 4.32, 4.42, 4.53, 4.64, 4.75, 4.87, 4.99, 5.11, 5.23, 5.36, 5.49, 5.62, 5.76, 5.90, 6.04, 6.19, 6.34, 6.49, 6.65, 6.81, 6.98, 7.15, 7.32, 7.50, 7.68, 7.87, 8.06, 8.25, 8.45, 8.66, 8.87, 9.09, 9.31, 9.53, 9.76];
+        const baseValues = [...new Set([...e24, ...e96])].sort((a, b) => a - b);
+        const allResistors = [];
+        const decades = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000];
+        decades.forEach(d => baseValues.forEach(b => allResistors.push(b * d)));
+        allResistors.sort((a, b) => a - b);
+
+        const vinEl = document.getElementById('vin');
+        const voutEl = document.getElementById('vout');
+        const guideEl = document.getElementById('guideText');
+
+        function updateGuide() {
+            const vinVal = parseFloat(vinEl.value);
+            const rangeParts = document.querySelector('input[name="range"]:checked').value.split(',');
+            const minI = parseFloat(rangeParts[0]);
+            const maxI = parseFloat(rangeParts[1]);
+            
+            if (isNaN(vinVal) || vinVal <= 0) {
+                guideEl.innerHTML = "Waiting for voltage inputs...";
+                return;
+            }
+            
+            const rMin = vinVal / maxI;
+            const rMax = minI === 0 ? "Any" : (vinVal / minI);
+            const formatR = (r) => r === "Any" ? "∞" : (r >= 1000000 ? (r/1000000).toFixed(1) + "MΩ" : r >= 1000 ? (r/1000).toFixed(1) + "kΩ" : r.toFixed(0) + "Ω");
+
+            guideEl.innerHTML = `Impedance targets for current window:<br> <strong>${formatR(rMin)}</strong> to <strong>${formatR(rMax)}</strong> total.`;
+        }
+
+        vinEl.addEventListener('input', updateGuide);
+        document.querySelectorAll('input[name="range"]').forEach(r => r.addEventListener('change', updateGuide));
+
+        document.getElementById('calcBtn').addEventListener('click', function() {
+            const vin = parseFloat(vinEl.value);
+            const voutTarget = parseFloat(voutEl.value);
+            const rangeParts = document.querySelector('input[name="range"]:checked').value.split(',');
+            const minI = parseFloat(rangeParts[0]);
+            const maxI = parseFloat(rangeParts[1]);
+            const errorMsg = document.getElementById('errorMessage');
+            const resultsArea = document.getElementById('resultsArea');
+            const tbody = document.getElementById('resultsTableBody');
+
+            errorMsg.style.display = 'none';
+            resultsArea.style.display = 'none';
+
+            if (isNaN(vin) || isNaN(voutTarget) || voutTarget <= 0 || vin <= voutTarget) {
+                errorMsg.textContent = "Check Voltage Inputs (Vout < Vin)";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            let combinations = [];
+
+            for (let r1 of allResistors) {
+                const idealR2 = (voutTarget * r1) / (vin - voutTarget);
+                let low = 0, high = allResistors.length - 1;
+                while(low <= high){
+                    let mid = Math.floor((low + high)/2);
+                    if(allResistors[mid] < idealR2) low = mid + 1;
+                    else high = mid - 1;
+                }
+                const candidates = [allResistors[high], allResistors[low]].filter(v => v !== undefined);
+
+                candidates.forEach(r2 => {
+                    const actualCurrent = vin / (r1 + r2);
+                    if (actualCurrent > minI && actualCurrent <= maxI) {
+                        const actualVout = vin * (r2 / (r1 + r2));
+                        const vError = Math.abs(actualVout - voutTarget);
+                        combinations.push({
+                            r1, r2, vout: actualVout, vError,
+                            current: actualCurrent,
+                            power: (vin * vin) / (r1 + r2)
+                        });
+                    }
+                });
+            }
+
+            combinations.sort((a, b) => a.vError - b.vError);
+            tbody.innerHTML = '';
+            let count = 0;
+            let seen = new Set();
+            const formatR = (r) => r >= 1000000 ? (r/1000000).toFixed(2) + "M" : r >= 1000 ? (r/1000).toFixed(2) + "k" : r.toFixed(1);
+
+            if (combinations.length === 0) {
+                errorMsg.textContent = "No standard resistor matches in this range.";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            for (let c of combinations) {
+                let key = `${c.r1}-${c.r2}`;
+                if (seen.has(key)) continue;
+                seen.add(key);
+
+                let row = `<tr>
+                    <td><span class="val-bold">${formatR(c.r1)}</span> / <span class="val-bold">${formatR(c.r2)}</span></td>
+                    <td><strong>${c.vout.toFixed(5)} V</strong></td>
+                    <td>
+                        <span class="err-chip">±${(c.vError * 1000).toFixed(3)} mV</span><br>
+                        <span class="cur-chip">${(c.current * 1000).toFixed(4)} mA</span><br>
+                        <span class="pwr-chip">${(c.power * 1000).toFixed(2)} mW total</span>
+                    </td>
+                </tr>`;
+                tbody.innerHTML += row;
+                if (++count >= 5) break;
+            }
+            resultsArea.style.display = 'block';
+        });
+        updateGuide();
+    });
+</script>
+
+</body>
+</html>

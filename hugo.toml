@@ -114,6 +114,12 @@ weight = 10
 #weight = 20
 
 [[menu.main]]
+identifier = "tools"
+name = "Tools"
+url = "/tools/resistor_calculator.html"
+weight = 20
+
+[[menu.main]]
 identifier = "Projects"
 name = "Projects"
 url = "/projects/"
