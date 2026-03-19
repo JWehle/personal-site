@@ -124,7 +124,15 @@
 
 <div class="calculator-container">
     <h2>Divider Designer</h2>
-    
+
+    <p>This tool is for calculating a set of optimal resistors to use in a voltage divider. The tool pulls from a table made up of all E24 (5%) and E96 (%1) standard resistor values, which can be found in the link below from resistor manufacturer Vishay.</p>
+    <a href="https://www.vishay.com/docs/28372/e-series.pdf">Vishay E-Series Values Table</a>
+    <p> </p>
+    <img src="resistor_divider.png" alt="Resistor Divider Schematic">
+    <p> </p>
+    <p>A current window range is provided for selecting the magnitude of resistance ranges used in the calculation. It can be useful for targetting a specific divider impedance depending on the application, such as if the divider is being used as feedback for a converter, or part of an analog to digital converter signal conditioning circuit.</p>
+    <p> </p>
+
     <div id="errorMessage"></div>
 
     <div class="input-group">
