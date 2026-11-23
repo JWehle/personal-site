@@ -120,6 +120,12 @@ url = "/tools/resistor_calculator.html"
 weight = 20
 
 [[menu.main]]
+identifier = "telemetry"
+name = "Telemetry"
+url = "/tools/telemetry/"
+weight = 25
+
+[[menu.main]]
 identifier = "Projects"
 name = "Projects"
 url = "/projects/"
