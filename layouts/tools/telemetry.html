@@ -18,7 +18,7 @@
         <button type="button" data-hours="8760" class="telemetry-btn">1y</button>
       </div>
       <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.9rem;">
-        <button type="button" id="unit-toggle" class="telemetry-btn">Show °F</button>
+        <button type="button" id="unit-toggle" class="telemetry-btn">Show °C</button>
         <span id="telemetry-status">Loading...</span>
       </div>
     </div>
@@ -106,7 +106,7 @@
 (() => {
   const API_BASE = "https://jannettw.com/api/readings";
   let currentHours = 6;
-  let useFahrenheit = false;
+  let useFahrenheit = true;
   let latestReadings = [];
   let tempChart = null;
   let humidityChart = null;
@@ -146,14 +146,80 @@
     return sampled;
   }
 
-  function formatTimestamp(ts) {
+  function formatXAxisTick(ts, hours) {
     const d = new Date(ts * 1000);
-    return d.toLocaleString([], {
+    if (hours <= 24) {
+      return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    }
+    if (hours <= 168) {
+      return d.toLocaleDateString([], {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      });
+    }
+    if (hours <= 720) {
+      return d.toLocaleDateString([], { month: "short", day: "numeric" });
+    }
+    return d.toLocaleDateString([], {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  }
+
+  function formatTooltipTimestamp(ts) {
+    return new Date(ts * 1000).toLocaleString([], {
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
     });
+  }
+
+  function formatDateRange(rows) {
+    const first = new Date(rows[0].ts * 1000);
+    const last = new Date(rows[rows.length - 1].ts * 1000);
+    const dateOptions = { weekday: "short", month: "short", day: "numeric" };
+    const firstLabel = first.toLocaleDateString([], dateOptions);
+    const lastLabel = last.toLocaleDateString([], dateOptions);
+    const sameDay =
+      first.getFullYear() === last.getFullYear() &&
+      first.getMonth() === last.getMonth() &&
+      first.getDate() === last.getDate();
+
+    if (sameDay) {
+      return `${firstLabel}, ${first.getFullYear()}`;
+    }
+    if (first.getFullYear() !== last.getFullYear()) {
+      return `${firstLabel}, ${first.getFullYear()} – ${lastLabel}, ${last.getFullYear()}`;
+    }
+    return `${firstLabel} – ${lastLabel}, ${last.getFullYear()}`;
+  }
+
+  function xAxisOptions(plotted) {
+    const showDateTitle = currentHours <= 24;
+    return {
+      ticks: { maxTicksLimit: 8 },
+      title: {
+        display: showDateTitle,
+        text: showDateTitle ? formatDateRange(plotted) : "",
+        padding: { top: 8 },
+      },
+    };
+  }
+
+  function chartPlugins(plotted) {
+    return {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          title(items) {
+            return formatTooltipTimestamp(plotted[items[0].dataIndex].ts);
+          },
+        },
+      },
+    };
   }
 
   function renderChartsAndCards() {
@@ -176,7 +242,7 @@
     });
 
     const plotted = downsample(latestReadings, 600);
-    const labels = plotted.map((r) => formatTimestamp(r.ts));
+    const labels = plotted.map((r) => formatXAxisTick(r.ts, currentHours));
     const temps = plotted.map((r) =>
       Number((useFahrenheit ? cToF(r.temp_c) : r.temp_c).toFixed(2))
     );
@@ -205,8 +271,8 @@
       options: {
         responsive: true,
         animation: false,
-        plugins: { legend: { display: false } },
-        scales: { x: { ticks: { maxTicksLimit: 8 } } },
+        plugins: chartPlugins(plotted),
+        scales: { x: xAxisOptions(plotted) },
       },
     });
 
@@ -227,8 +293,8 @@
       options: {
         responsive: true,
         animation: false,
-        plugins: { legend: { display: false } },
-        scales: { x: { ticks: { maxTicksLimit: 8 } } },
+        plugins: chartPlugins(plotted),
+        scales: { x: xAxisOptions(plotted) },
       },
     });
   }
