@@ -116,7 +116,7 @@ weight = 10
 [[menu.main]]
 identifier = "tools"
 name = "Tools"
-url = "/tools/resistor_calculator.html"
+url = "/tools/"
 weight = 20
 
 [[menu.main]]
