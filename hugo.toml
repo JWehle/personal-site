@@ -15,10 +15,10 @@ minifyOutput = true
 [params]
 env = "production"
 title = "Jannett Wehle"
-description = "Personal Site"
+description = "Portfolio of Jannett Wehle, electrical engineer and PCB designer creating power electronics, embedded systems, and practical hardware projects."
 keywords = [ "Portfolio" ]
 author = "Jannett Wehle"
-images = [ "<link or path of image for opengraph, twitter-cards>" ]
+images = [ "/jannett.jpg" ]
 DateFormat = "January 2, 2006"
 defaultTheme = "dark"
 disableThemeToggle = true
@@ -41,15 +41,13 @@ tocopen = false
   [params.assets]
   disableFingerprinting = true
   favicon = "/favicon.ico"
-  favicon16x16 = "<link / abs url>"
-  favicon32x32 = "<link / abs url>"
-  apple_touch_icon = "<link / abs url>"
-  safari_pinned_tab = "<link / abs url>"
+  favicon16x16 = "/favicon-16x16.png"
+  favicon32x32 = "/favicon-32x32.png"
+  apple_touch_icon = "/apple-touch-icon.png"
+  safari_pinned_tab = "/safari-pinned-tab.svg"
 
   [params.label]
   text = "Home"
-  icon = "/apple-touch-icon.png"
-  iconHeight = 35
 
   [params.profileMode]
   enabled = true

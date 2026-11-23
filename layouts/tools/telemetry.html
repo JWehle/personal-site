@@ -11,15 +11,15 @@
   <div class="post-content">
     <div id="telemetry-controls" style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
       <div style="display:flex;gap:0.4rem;flex-wrap:wrap;" id="range-buttons">
-        <button type="button" data-hours="6" class="telemetry-btn active">6h</button>
-        <button type="button" data-hours="24" class="telemetry-btn">24h</button>
-        <button type="button" data-hours="168" class="telemetry-btn">7d</button>
-        <button type="button" data-hours="720" class="telemetry-btn">30d</button>
-        <button type="button" data-hours="8760" class="telemetry-btn">1y</button>
+        <button type="button" data-hours="6" class="telemetry-btn active" aria-pressed="true">6h</button>
+        <button type="button" data-hours="24" class="telemetry-btn" aria-pressed="false">24h</button>
+        <button type="button" data-hours="168" class="telemetry-btn" aria-pressed="false">7d</button>
+        <button type="button" data-hours="720" class="telemetry-btn" aria-pressed="false">30d</button>
+        <button type="button" data-hours="8760" class="telemetry-btn" aria-pressed="false">1y</button>
       </div>
       <div style="display:flex;gap:0.75rem;align-items:center;font-size:0.9rem;">
-        <button type="button" id="unit-toggle" class="telemetry-btn">Show °C</button>
-        <span id="telemetry-status">Loading...</span>
+        <button type="button" id="unit-toggle" class="telemetry-btn" aria-label="Switch to Celsius">Show °C</button>
+        <span id="telemetry-status" role="status" aria-live="polite" aria-atomic="true">Loading...</span>
       </div>
     </div>
 
@@ -44,12 +44,14 @@
 
     <div class="telemetry-chart-box">
       <h3>Temperature Trend</h3>
-      <canvas id="tempChart" height="110"></canvas>
+      <canvas id="tempChart" height="110" role="img" aria-label="Temperature readings over the selected time range" aria-describedby="temp-chart-summary"></canvas>
+      <p class="telemetry-visually-hidden" id="temp-chart-summary">Waiting for temperature readings.</p>
     </div>
 
     <div class="telemetry-chart-box" style="margin-top:1.5rem;">
       <h3>Humidity Trend</h3>
-      <canvas id="humidityChart" height="110"></canvas>
+      <canvas id="humidityChart" height="110" role="img" aria-label="Humidity readings over the selected time range" aria-describedby="humidity-chart-summary"></canvas>
+      <p class="telemetry-visually-hidden" id="humidity-chart-summary">Waiting for humidity readings.</p>
     </div>
   </div>
 </article>
@@ -99,9 +101,20 @@
     color: var(--theme);
     border-color: var(--primary);
   }
+  .telemetry-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.6.2/dist/chart.umd.min.js"></script>
 <script>
 (() => {
   const API_BASE = "https://jannettw.com/api/readings";
@@ -117,6 +130,8 @@
   const rssiEl = document.getElementById("latest-rssi");
   const timeEl = document.getElementById("latest-time");
   const unitBtn = document.getElementById("unit-toggle");
+  const tempSummaryEl = document.getElementById("temp-chart-summary");
+  const humiditySummaryEl = document.getElementById("humidity-chart-summary");
 
   function cToF(c) {
     return (c * 9) / 5 + 32;
@@ -200,7 +215,11 @@
   function xAxisOptions(plotted) {
     const showDateTitle = currentHours <= 24;
     return {
-      ticks: { maxTicksLimit: 8 },
+      ticks: {
+        maxTicksLimit: window.innerWidth <= 480 ? 4 : 8,
+        maxRotation: 0,
+        minRotation: 0,
+      },
       title: {
         display: showDateTitle,
         text: showDateTitle ? formatDateRange(plotted) : "",
@@ -222,12 +241,31 @@
     };
   }
 
+  function describeRange(values, unit, latest, timestamp) {
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const formatValue = (value) => unit === "% RH"
+      ? `${value.toFixed(1)}% RH`
+      : `${value.toFixed(1)} ${unit}`;
+    return `Values ranged from ${formatValue(min)} to ${formatValue(max)} during this period. Latest: ${formatValue(latest)} at ${formatTooltipTimestamp(timestamp)}.`;
+  }
+
   function renderChartsAndCards() {
     if (!latestReadings.length) {
       tempEl.textContent = "--";
       humEl.textContent = "--";
       rssiEl.textContent = "--";
       timeEl.textContent = "No data in range";
+      tempSummaryEl.textContent = "No temperature readings are available for this time range.";
+      humiditySummaryEl.textContent = "No humidity readings are available for this time range.";
+      if (tempChart) {
+        tempChart.destroy();
+        tempChart = null;
+      }
+      if (humidityChart) {
+        humidityChart.destroy();
+        humidityChart = null;
+      }
       return;
     }
 
@@ -247,6 +285,10 @@
       Number((useFahrenheit ? cToF(r.temp_c) : r.temp_c).toFixed(2))
     );
     const hums = plotted.map((r) => Number(r.humidity.toFixed(2)));
+    const tempUnit = useFahrenheit ? "°F" : "°C";
+    const latestTemp = useFahrenheit ? cToF(latest.temp_c) : latest.temp_c;
+    tempSummaryEl.textContent = describeRange(temps, tempUnit, latestTemp, latest.ts);
+    humiditySummaryEl.textContent = describeRange(hums, "% RH", latest.humidity, latest.ts);
 
     const tempCtx = document.getElementById("tempChart").getContext("2d");
     const humCtx = document.getElementById("humidityChart").getContext("2d");
@@ -272,7 +314,10 @@
         responsive: true,
         animation: false,
         plugins: chartPlugins(plotted),
-        scales: { x: xAxisOptions(plotted) },
+        scales: {
+          x: xAxisOptions(plotted),
+          y: { title: { display: true, text: `Temperature (${tempUnit})` } },
+        },
       },
     });
 
@@ -294,7 +339,10 @@
         responsive: true,
         animation: false,
         plugins: chartPlugins(plotted),
-        scales: { x: xAxisOptions(plotted) },
+        scales: {
+          x: xAxisOptions(plotted),
+          y: { title: { display: true, text: "Relative humidity (% RH)" } },
+        },
       },
     });
   }
@@ -314,10 +362,14 @@
     }
   }
 
-  document.querySelectorAll("#range-buttons button").forEach((btn) => {
+  const rangeButtons = document.querySelectorAll("#range-buttons button");
+  rangeButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      document.querySelectorAll("#range-buttons button").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
+      rangeButtons.forEach((button) => {
+        const selected = button === btn;
+        button.classList.toggle("active", selected);
+        button.setAttribute("aria-pressed", String(selected));
+      });
       loadReadings(Number(btn.dataset.hours));
     });
   });
@@ -325,6 +377,7 @@
   unitBtn.addEventListener("click", () => {
     useFahrenheit = !useFahrenheit;
     unitBtn.textContent = useFahrenheit ? "Show °C" : "Show °F";
+    unitBtn.setAttribute("aria-label", `Switch to ${useFahrenheit ? "Celsius" : "Fahrenheit"}`);
     renderChartsAndCards();
   });
 

@@ -1,9 +1,16 @@
 #!/bin/bash
 
-rm ./*.tar.gz 2>/dev/null
+set -euo pipefail
 
-wget $( curl -L -s https://api.github.com/repos/gohugoio/hugo/releases/latest | grep "browser_download_url.*linux-amd64.tar.gz" | grep -v "extended" | cut -d\" -f4 )
-tar -xvzf ./*.tar.gz hugo
-chmod u+x ./hugo
+HUGO_VERSION="0.170.1"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+TEMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TEMP_DIR"' EXIT
 
-./hugo --minify
+ARCHIVE="hugo_${HUGO_VERSION}_linux-amd64.tar.gz"
+URL="https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/${ARCHIVE}"
+
+cd "$SCRIPT_DIR"
+curl --fail --location --silent --show-error "$URL" --output "$TEMP_DIR/$ARCHIVE"
+tar -xzf "$TEMP_DIR/$ARCHIVE" -C "$TEMP_DIR" hugo
+"$TEMP_DIR/hugo" --minify
