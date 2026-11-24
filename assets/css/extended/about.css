@@ -1,0 +1,35 @@
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.6fr);
+  gap: clamp(1.25rem, 3vw, 2rem);
+  align-items: start;
+}
+
+.about-layout .about-skating-image {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: 0;
+  border-radius: var(--radius);
+}
+
+.about-layout-copy > :first-child {
+  margin-top: 0;
+}
+
+.about-layout-copy > :last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 680px) {
+  .about-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .about-layout .about-skating-image {
+    width: min(100%, 220px);
+    margin: 0 auto;
+  }
+}

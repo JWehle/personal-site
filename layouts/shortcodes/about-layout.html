@@ -1,0 +1,6 @@
+<div class="about-layout">
+  <img class="about-skating-image" src="{{ .Get "src" }}" alt="{{ .Get "alt" }}" width="960" height="1280" loading="eager">
+  <div class="about-layout-copy">
+    {{ .Page.RenderString .Inner }}
+  </div>
+</div>
