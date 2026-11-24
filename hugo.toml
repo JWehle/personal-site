@@ -62,10 +62,6 @@ Electrical Engineer | PCB Designer | Creative Writer
   url = "https://github.com/jwehle"
 
   [[params.socialIcons]]
-  name = "bluesky"
-  url = "https://bsky.app/profile/jannettw.com"
-
-  [[params.socialIcons]]
   name = "youtube"
   url = "https://www.youtube.com/@jannettw"
 
@@ -76,14 +72,6 @@ Electrical Engineer | PCB Designer | Creative Writer
   [[params.socialIcons]]
   name = "email"
   url = "mailto:jannett@jannettw.com"
-
-  [[params.socialIcons]]
-  name = "signal"
-  url = "https://signal.me/#eu/Al_bybE8vA52IReEGhbhb4zNi6lhSPtgBk9oWqTxX6W-PIourTVKqofRwGDSQNF8"
-
-#  [[params.socialIcons]]
-#  name = "signal"
-#  url = ""
 
   [params.cover]
   hidden = true
@@ -120,7 +108,7 @@ weight = 20
 [[menu.main]]
 identifier = "telemetry"
 name = "Telemetry"
-url = "/tools/telemetry/"
+url = "/telemetry/"
 weight = 25
 
 [[menu.main]]
