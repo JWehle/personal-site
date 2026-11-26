@@ -54,31 +54,12 @@ function lowerBound(values, target) {
   return low;
 }
 
-function firstIndexAtMaximumCurrent(values, r1, vin, range) {
+function firstIndexWhere(values, predicate) {
   let low = 0;
   let high = values.length;
   while (low < high) {
     const mid = Math.floor((low + high) / 2);
-    const current = vin / (r1 + values[mid]);
-    const withinMaximum = range.maxInclusive === false
-      ? current < range.max
-      : current <= range.max;
-    if (withinMaximum) high = mid;
-    else low = mid + 1;
-  }
-  return low;
-}
-
-function firstIndexBelowMinimumCurrent(values, r1, vin, range) {
-  let low = 0;
-  let high = values.length;
-  while (low < high) {
-    const mid = Math.floor((low + high) / 2);
-    const current = vin / (r1 + values[mid]);
-    const belowMinimum = range.minInclusive === false
-      ? current <= range.min
-      : current < range.min;
-    if (belowMinimum) high = mid;
+    if (predicate(mid)) high = mid;
     else low = mid + 1;
   }
   return low;
@@ -97,12 +78,19 @@ function isCurrentInRange(current, range) {
 export function calculateDividerCandidates({
   vin,
   vout,
+  biasCurrent = 0,
   currentRange,
   series = "combined",
   limit = 5,
 }) {
   if (!Number.isFinite(vin) || !Number.isFinite(vout) || vin <= 0 || vout <= 0 || vout >= vin) {
     throw new RangeError("Expected finite voltages with 0 < Vout < Vin.");
+  }
+  if (
+    !Number.isFinite(biasCurrent) ||
+    biasCurrent < 0
+  ) {
+    throw new RangeError("Expected a finite, non-negative bias current.");
   }
   if (
     !currentRange ||
@@ -121,11 +109,27 @@ export function calculateDividerCandidates({
   const best = [];
 
   for (const r1 of resistors) {
-    const idealR2 = (vout * r1) / (vin - vout);
-    const first = firstIndexAtMaximumCurrent(resistors, r1, vin, currentRange);
-    const last = currentRange.min === 0
-      ? resistors.length
-      : firstIndexBelowMinimumCurrent(resistors, r1, vin, currentRange);
+    const availableCurrent = (vin - vout) / r1 - biasCurrent;
+    if (availableCurrent <= 0) continue;
+
+    const idealR2 = biasCurrent === 0
+      ? (vout * r1) / (vin - vout)
+      : vout / availableCurrent;
+    const currentAt = (r2) => biasCurrent === 0
+      ? vin / (r1 + r2)
+      : (vin + biasCurrent * r2) / (r1 + r2);
+    const first = firstIndexWhere(
+      resistors,
+      (index) => currentRange.maxInclusive === false
+        ? currentAt(resistors[index]) < currentRange.max
+        : currentAt(resistors[index]) <= currentRange.max
+    );
+    const last = firstIndexWhere(
+      resistors,
+      (index) => currentRange.minInclusive === false
+        ? currentAt(resistors[index]) <= currentRange.min
+        : currentAt(resistors[index]) < currentRange.min
+    );
 
     if (first >= last) continue;
 
@@ -141,18 +145,23 @@ export function calculateDividerCandidates({
     for (const candidateIndex of candidateIndices) {
       const r2 = resistors[candidateIndex];
       const totalResistance = r1 + r2;
-      const current = vin / totalResistance;
+      const current = currentAt(r2);
       if (!isCurrentInRange(current, currentRange)) continue;
 
-      const voutActual = vin * (r2 / totalResistance);
+      const voutActual = biasCurrent === 0
+        ? vin * (r2 / totalResistance)
+        : (vin - biasCurrent * r1) * (r2 / totalResistance);
       best.push({
         r1,
         r2,
         vout: voutActual,
+        vinForTarget: vout * (1 + r1 / r2) + biasCurrent * r1,
         vError: Math.abs(voutActual - vout),
         current,
         powerR1: current * current * r1,
-        powerR2: current * current * r2,
+        powerR2: biasCurrent === 0
+          ? current * current * r2
+          : (voutActual * voutActual) / r2,
       });
     }
   }

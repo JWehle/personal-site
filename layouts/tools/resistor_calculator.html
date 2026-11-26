@@ -13,7 +13,7 @@
       {{ .Content }}
 
       <p>
-        Choose a current window to constrain the total divider resistance. This can help
+        Choose a current window to constrain the divider input current. This can help
         when selecting a divider impedance for converter feedback or an ADC input.
       </p>
       <figure class="divider-schematic">
@@ -26,8 +26,9 @@
       </figure>
 
       <p class="calculator-note">
-        Results use nominal resistor values and assume an unloaded divider. Actual output voltage depends on
-        resistor tolerance and load; check each resistor's power rating and the part datasheet before building.
+        Results use nominal resistor values and include the optional output-node bias current. Actual voltages
+        depend on resistor tolerance and other loads; check each resistor's power rating and the part datasheet
+        before building.
       </p>
 
       <form id="divider-form" novalidate>
@@ -55,6 +56,17 @@
               <option value="e96">E96 (typically 1%)</option>
             </select>
           </div>
+          <div class="input-group">
+            <label for="biasCurrent">Optional bias current sunk at Vout</label>
+            <div class="input-with-unit">
+              <input type="number" id="biasCurrent" name="biasCurrent" value="0" min="0" step="any">
+              <select id="biasUnit" name="biasUnit" class="unit-select" aria-label="Bias current unit">
+                <option value="1e-9" selected>nA</option>
+                <option value="1e-6">uA</option>
+                <option value="1e-3">mA</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <fieldset class="range-group">
@@ -69,11 +81,11 @@
           </label>
           <label class="range-option">
             <input type="radio" name="range" data-min="0.001" data-max="0.01">
-            <span>High power: 1 mA to 10 mA</span>
+            <span>Moderate Load: 1 mA to 10 mA</span>
           </label>
           <label class="range-option">
             <input type="radio" name="range" data-min="0.01" data-max="0.1">
-            <span>Heavy load: 10 mA to 100 mA</span>
+            <span>Strong Load: 10 mA to 100 mA</span>
           </label>
         </fieldset>
 
@@ -92,7 +104,7 @@
             <thead>
               <tr>
                 <th scope="col">R1 / R2</th>
-                <th scope="col">Actual Vout</th>
+                <th scope="col">Actual Vout (Fixed Vin) / Vin (Fixed Vout)</th>
                 <th scope="col">Metrics</th>
               </tr>
             </thead>
@@ -158,8 +170,17 @@
     border-radius: 6px;
     font: inherit;
   }
+  .unit-select {
+    padding: 0.7rem 0.5rem;
+    color: var(--primary);
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font: inherit;
+  }
   .input-with-unit input:focus-visible,
   .series-select:focus-visible,
+  .unit-select:focus-visible,
   .range-option input:focus-visible,
   .calculate-button:focus-visible {
     outline: 2px solid var(--primary);
@@ -276,6 +297,8 @@ import { calculateDividerCandidates } from "/tools/resistor-divider.mjs";
   const formEl = document.getElementById("divider-form");
   const vinEl = document.getElementById("vin");
   const voutEl = document.getElementById("vout");
+  const biasCurrentEl = document.getElementById("biasCurrent");
+  const biasUnitEl = document.getElementById("biasUnit");
   const seriesEl = document.getElementById("series");
   const guideEl = document.getElementById("guideText");
   const errorEl = document.getElementById("errorMessage");
@@ -302,8 +325,17 @@ import { calculateDividerCandidates } from "/tools/resistor-divider.mjs";
   function updateGuide() {
     const vin = vinEl.valueAsNumber;
     const currentRange = getCurrentRange();
+    const biasCurrent = biasCurrentEl.valueAsNumber * Number(biasUnitEl.value);
     if (!Number.isFinite(vin) || vin <= 0 || !currentRange) {
       guideEl.textContent = "Enter a positive input voltage to see the impedance target.";
+      return;
+    }
+
+    if (biasCurrent > 0) {
+      const minimum = `${currentRange.minInclusive ? "at least" : "greater than"} ${(currentRange.min * 1000).toFixed(4)} mA`;
+      const maximum = `${currentRange.maxInclusive ? "at most" : "less than"} ${(currentRange.max * 1000).toFixed(4)} mA`;
+      guideEl.textContent =
+        `Input current must be ${minimum} and ${maximum}. Candidate selection includes the output-node bias current.`;
       return;
     }
 
@@ -328,7 +360,11 @@ import { calculateDividerCandidates } from "/tools/resistor-divider.mjs";
     resistanceCell.append(r1, document.createTextNode(" / "), r2);
 
     const outputCell = document.createElement("td");
-    outputCell.textContent = `${result.vout.toFixed(5)} V`;
+    outputCell.append(
+      document.createTextNode(`${result.vout.toFixed(5)} V (fixed Vin)`),
+      document.createElement("br"),
+      document.createTextNode(`${result.vinForTarget.toFixed(5)} V (fixed Vout)`)
+    );
 
     const metricsCell = document.createElement("td");
     const metrics = [
@@ -362,7 +398,17 @@ import { calculateDividerCandidates } from "/tools/resistor-divider.mjs";
 
     const vin = vinEl.valueAsNumber;
     const voutTarget = voutEl.valueAsNumber;
+    const biasCurrentValue = biasCurrentEl.valueAsNumber;
+    const biasCurrent = biasCurrentValue * Number(biasUnitEl.value);
     const currentRange = getCurrentRange();
+    if (
+      !Number.isFinite(biasCurrentValue) ||
+      biasCurrentValue < 0 ||
+      !Number.isFinite(biasCurrent)
+    ) {
+      showError("Enter a finite, non-negative bias current.");
+      return;
+    }
     if (
       !Number.isFinite(vin) ||
       !Number.isFinite(voutTarget) ||
@@ -377,6 +423,7 @@ import { calculateDividerCandidates } from "/tools/resistor-divider.mjs";
     const best = calculateDividerCandidates({
       vin,
       vout: voutTarget,
+      biasCurrent,
       currentRange,
       series: seriesEl.value,
     });
@@ -390,6 +437,8 @@ import { calculateDividerCandidates } from "/tools/resistor-divider.mjs";
   }
 
   vinEl.addEventListener("input", updateGuide);
+  biasCurrentEl.addEventListener("input", updateGuide);
+  biasUnitEl.addEventListener("change", updateGuide);
   document.querySelectorAll('input[name="range"]').forEach((input) => {
     input.addEventListener("change", updateGuide);
   });
